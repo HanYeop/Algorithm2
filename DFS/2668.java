@@ -7,60 +7,53 @@ import java.util.*;
 public class Main {
 
     static int n;
-    static int[] one;
-    static int[] two;
-    static PriorityQueue<Integer> result;
+    static int[] arr;
+    static boolean[] visited;
+    static TreeSet<Integer> result;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
 
-        one = new int[n];
-        two = new int[n];
-        result = new PriorityQueue<>();
+        arr = new int[n + 1];
+        result = new TreeSet<>();
+        visited = new boolean[n + 1];
 
-        for(int i = 0; i < n; i++){
-            one[i] = i + 1;
-            two[i] = Integer.parseInt(br.readLine());
+        for(int i = 1; i <= n; i++){
+            arr[i] = Integer.parseInt(br.readLine());
         }
 
-        solve();
+        // DFS
+        for(int i = 1; i <= n; i++){
+            ArrayList<Integer> list = new ArrayList<>();
+            list.add(i);
+            solve(i, arr[i], list);
+        }
 
+        // 결과 출력
         System.out.println(result.size());
-        while (!result.isEmpty()){
-            System.out.println(result.poll());
+        for(int i : result){
+            System.out.println(i);
         }
     }
 
-    static void solve(){
-        for(int i = 0; i < n; i++){
-            int n1 = one[i];
-            int n2 = two[i];
+    static void solve(int start, int next, ArrayList<Integer> list){
 
-            // 이미 뽑은 수
-            if(n1 == 0){
-                continue;
+        // 사이클 발생 시 원소 전부 결과에 추가
+        if(start == next){
+            for(int i : list){
+                result.add(i);
             }
-
-            // 위아래가 같은 수는 결과에 추가
-            if(n1 == n2){
-                result.add(n1);
-                continue;
-            }
-
-            // 서로 반대되는 수 뽑음
-            for(int j = i + 1; j < n; j++){
-                if(one[j] == n2 && two[j] == n1){
-                    add(n1, n2, j);
-                    break;
-                }
-            }
+            return;
         }
-    }
 
-    static void add(int n1, int n2, int index){
-        result.add(n1);
-        result.add(n2);
-        one[index] = 0;
+        // 의미없는 사이클 발생 시 종료
+        if(list.size() >= n){
+            return;
+        }
+
+        list.add(next);
+        solve(start, arr[next], list);
+        list.remove(list.size() - 1);
     }
 }
