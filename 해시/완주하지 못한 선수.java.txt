@@ -1,0 +1,27 @@
+import java.util.*;
+
+// [프로그래머스] 완주하지 못한 선수 (Java)
+class Solution {
+    
+    static HashMap<String, Integer> map;
+    
+    public String solution(String[] participant, String[] completion) {
+        String answer = "";
+        map = new HashMap<>();
+        
+        for(String str : completion){
+            map.put(str, map.getOrDefault(str, 0) + 1);
+        }
+        
+        for(String str : participant){
+            if(map.getOrDefault(str, 0) > 0){
+                map.put(str, map.get(str) - 1);
+            }else{
+                System.out.println(str);
+                answer = str; 
+            }
+        }
+        
+        return answer;
+    }
+}
