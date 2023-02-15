@@ -3,7 +3,6 @@ class Solution {
     static int max = Integer.MIN_VALUE;
     static int subMax = Integer.MIN_VALUE;
     
-    // 0 = 가로, 1 = 세로
     static int maxIndex;
     static int minIndex;
 
